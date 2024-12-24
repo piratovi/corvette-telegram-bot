@@ -45,6 +45,7 @@ public class UpdateConsumerService implements LongPollingUpdateConsumer {
 
     private String generateReply(String requestText) {
         switch (requestText) {
+            case "Ton":
             case "ton": {
                 return String.valueOf(tonService.getTonQuote());
             }

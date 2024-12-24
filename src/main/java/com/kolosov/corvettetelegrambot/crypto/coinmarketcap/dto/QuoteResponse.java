@@ -1,4 +1,4 @@
-package com.kolosov.corvettetelegrambot.crypto.dto;
+package com.kolosov.corvettetelegrambot.crypto.coinmarketcap.dto;
 
 public record QuoteResponse(
         Status status,

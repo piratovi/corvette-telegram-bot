@@ -1,4 +1,4 @@
-package com.kolosov.corvettetelegrambot.crypto.dto;
+package com.kolosov.corvettetelegrambot.crypto.coinmarketcap.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

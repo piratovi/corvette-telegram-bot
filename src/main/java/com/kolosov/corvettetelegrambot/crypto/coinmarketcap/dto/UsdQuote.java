@@ -1,4 +1,4 @@
-package com.kolosov.corvettetelegrambot.crypto.dto;
+package com.kolosov.corvettetelegrambot.crypto.coinmarketcap.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -46,4 +46,19 @@ public record UsdQuote(
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
         @JsonProperty("last_updated")
         Instant lastUpdated
-) {}
+
+
+) {
+    @Override
+    public String toString() {
+        return """
+                %-24s%5.2f
+                %-16s%5.2f
+                %-15s%5.2f
+                """.formatted(
+                "Price:", price,
+                "% change 1h:", percentChange1h,
+                "% change 24h:", percentChange24h
+        );
+    }
+}

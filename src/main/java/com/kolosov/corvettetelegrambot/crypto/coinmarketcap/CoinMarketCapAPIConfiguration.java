@@ -1,4 +1,4 @@
-package com.kolosov.corvettetelegrambot.crypto;
+package com.kolosov.corvettetelegrambot.crypto.coinmarketcap;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

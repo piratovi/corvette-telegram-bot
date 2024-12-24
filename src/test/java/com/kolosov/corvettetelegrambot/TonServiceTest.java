@@ -1,7 +1,8 @@
 package com.kolosov.corvettetelegrambot;
 
-import com.kolosov.corvettetelegrambot.crypto.CoinMarketCapAPIConfiguration;
+import com.kolosov.corvettetelegrambot.crypto.coinmarketcap.CoinMarketCapAPIConfiguration;
 import com.kolosov.corvettetelegrambot.crypto.TonService;
+import com.kolosov.corvettetelegrambot.crypto.coinmarketcap.dto.UsdQuote;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -16,7 +17,7 @@ public class TonServiceTest {
 
     @Test
     public void basicGet() {
-        double tonQuote = tonService.getTonQuote();
+        UsdQuote tonQuote = tonService.getTonQuote();
         System.out.println(tonQuote);
     }
 }
