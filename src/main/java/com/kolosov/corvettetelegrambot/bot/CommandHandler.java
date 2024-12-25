@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UpdateConsumerService implements LongPollingUpdateConsumer {
+public class CommandHandler implements LongPollingUpdateConsumer {
 
     private final TelegramClient telegramClient;
     private final TonService tonService;
@@ -46,9 +46,8 @@ public class UpdateConsumerService implements LongPollingUpdateConsumer {
     private String generateReply(String requestText) {
         switch (requestText) {
             case "Ton":
-            case "ton": {
+            case "ton":
                 return String.valueOf(tonService.getTonQuote());
-            }
             default: {
                 return "Wrong command";
             }
