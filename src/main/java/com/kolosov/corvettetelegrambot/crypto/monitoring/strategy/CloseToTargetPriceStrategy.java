@@ -9,7 +9,7 @@ public class CloseToTargetPriceStrategy extends AbstractNotificationStrategy{
 
     @Override
     public boolean condition() {
-        return calculatePriceDiff(quote.price()) < 10;
+        return calculatePriceDiff(quote.price()) < 5;
     }
 
     @Override
