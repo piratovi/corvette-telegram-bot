@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +18,7 @@ public class TonService {
     private final CoinMarketCapAPI coinMarketCapAPI;
 
     public UsdQuote getTonQuote() {
-        QuoteResponse quoteResponse = coinMarketCapAPI.getQuotes(List.of("TON"));
+        QuoteResponse quoteResponse = coinMarketCapAPI.getQuotes(Map.of("symbol", "TON"));
         UsdQuote usdQuote = quoteResponse.data().coins().get("TON").quote().usd();
         logger.info(usdQuote.toString());
         return usdQuote;
