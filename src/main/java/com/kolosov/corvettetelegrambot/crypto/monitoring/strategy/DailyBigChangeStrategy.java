@@ -2,12 +2,15 @@ package com.kolosov.corvettetelegrambot.crypto.monitoring.strategy;
 
 import lombok.experimental.SuperBuilder;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 @SuperBuilder
 public class DailyBigChangeStrategy extends AbstractNotificationStrategy{
 
     @Override
     public boolean condition() {
-        return Math.abs(quote.percentChange24h()) > 10;
+        double percentPriceChange = Math.abs(quote.percentChange24h());
+        return percentPriceChange > 10 && hasTimePastSinceLastNotification(DAYS, 1);
     }
 
     @Override

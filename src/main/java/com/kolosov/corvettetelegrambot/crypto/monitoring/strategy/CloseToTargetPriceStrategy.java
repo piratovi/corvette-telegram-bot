@@ -2,6 +2,8 @@ package com.kolosov.corvettetelegrambot.crypto.monitoring.strategy;
 
 import lombok.experimental.SuperBuilder;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 @SuperBuilder
 public class CloseToTargetPriceStrategy extends AbstractNotificationStrategy{
 
@@ -9,7 +11,8 @@ public class CloseToTargetPriceStrategy extends AbstractNotificationStrategy{
 
     @Override
     public boolean condition() {
-        return calculatePriceDiff(quote.price()) < 5;
+        double percentPriceDiff = calculatePriceDiff(quote.price());
+        return percentPriceDiff < 5 && hasTimePastSinceLastNotification(DAYS, 1);
     }
 
     @Override
