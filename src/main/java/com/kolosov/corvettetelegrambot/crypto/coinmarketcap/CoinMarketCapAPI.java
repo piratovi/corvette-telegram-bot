@@ -14,5 +14,5 @@ import java.util.Map;
 public interface CoinMarketCapAPI {
 
     @GetExchange("/cryptocurrency/quotes/latest")
-    QuoteResponse getQuotes(@RequestParam Map<String, String> requestParams);
+    QuoteResponse getQuotes(@RequestParam Map<String, Object> requestParams);
 }

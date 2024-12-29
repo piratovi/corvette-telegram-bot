@@ -1,5 +1,6 @@
 package com.kolosov.corvettetelegrambot.crypto.history;
 
+import com.kolosov.corvettetelegrambot.crypto.Cryptocurrency;
 import com.kolosov.corvettetelegrambot.crypto.cryptocompare.CryptocompareAPI;
 import com.kolosov.corvettetelegrambot.crypto.cryptocompare.dto.CryptoData;
 import com.kolosov.corvettetelegrambot.crypto.cryptocompare.dto.CryptocompareResponse;
@@ -20,7 +21,7 @@ public class CryptoHistoryService {
     private final CryptocompareAPI cryptocompareAPI;
     private final CryptoHistoryMapper mapper;
 
-    public CoinHistoryContainer combineHistory(String coinName) {
+    public CoinHistoryContainer getHistory(Cryptocurrency coinName) {
         List<CryptoData> dailyHistory = getHistory(coinName, "days", 30);
         List<CryptoData> hourlyHistory = getHistory(coinName, "hours", 24);
         List<CryptoData> minutesHistory = getHistory(coinName, "minutes", 30);
@@ -32,7 +33,7 @@ public class CryptoHistoryService {
     }
 
     @NotNull
-    private List<CryptoData> getHistory(String coinName, String timeUnit, int limit) {
+    private List<CryptoData> getHistory(Cryptocurrency coinName, String timeUnit, int limit) {
         Map<String, Object> requestParams = Map.of(
                 "market", "cadli",
                 "instrument", coinName + "-USD",

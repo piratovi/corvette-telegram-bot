@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+import static com.kolosov.corvettetelegrambot.crypto.Cryptocurrency.TON;
+
 @Service
 @RequiredArgsConstructor
 public class TonService {
@@ -18,8 +20,8 @@ public class TonService {
     private final CoinMarketCapAPI coinMarketCapAPI;
 
     public UsdQuote getTonQuote() {
-        QuoteResponse quoteResponse = coinMarketCapAPI.getQuotes(Map.of("symbol", "TON"));
-        UsdQuote usdQuote = quoteResponse.data().coins().get("TON").quote().usd();
+        QuoteResponse quoteResponse = coinMarketCapAPI.getQuotes(Map.of("symbol", TON));
+        UsdQuote usdQuote = quoteResponse.data().coins().get(TON.name()).quote().usd();
         logger.info(usdQuote.toString());
         return usdQuote;
 

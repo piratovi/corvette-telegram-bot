@@ -1,7 +1,9 @@
 package com.kolosov.corvettetelegrambot;
 
+import com.kolosov.corvettetelegrambot.crypto.ai.CryptoAdviser;
+import com.kolosov.corvettetelegrambot.crypto.ai.LLMCostCalculator;
+import com.kolosov.corvettetelegrambot.crypto.ai.configuration.ChatClientConfiguration;
 import com.kolosov.corvettetelegrambot.crypto.cryptocompare.CryptocompareAPIConfiguration;
-import com.kolosov.corvettetelegrambot.crypto.history.CoinHistoryContainer;
 import com.kolosov.corvettetelegrambot.crypto.history.CryptoHistoryService;
 import com.kolosov.corvettetelegrambot.crypto.history.mapper.CryptoHistoryMapper;
 import com.kolosov.corvettetelegrambot.crypto.history.mapper.CryptoHistoryMapperImpl;
@@ -11,21 +13,20 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import static com.kolosov.corvettetelegrambot.crypto.Cryptocurrency.TON;
-
-@SpringBootTest(classes = {CryptoHistoryService.class, CryptocompareAPIConfiguration.class, CryptoHistoryMapper.class, CryptoHistoryMapperImpl.class})
+@SpringBootTest(classes = {CryptoHistoryService.class, CryptocompareAPIConfiguration.class,
+        CryptoHistoryMapper.class, CryptoHistoryMapperImpl.class, CryptoAdviser.class, ChatClientConfiguration.class,
+        LLMCostCalculator.class})
 @EnableAutoConfiguration
 @ActiveProfiles("dev")
-public class CoinHistoryServiceTest {
+public class CryptoAdvisorTest {
 
     @Autowired
-    private CryptoHistoryService cryptoHistoryService;
+    private CryptoAdviser cryptoAdviser;
 
     @Test
     public void basicGet() {
-        CoinHistoryContainer history = cryptoHistoryService.getHistory(TON);
-        history.dailyHistory().forEach(System.out::println);
-        history.hourlyHistory().forEach(System.out::println);
-        history.minutesHistory().forEach(System.out::println);
+        String userMessage = "";
+        String history = cryptoAdviser.advise(userMessage);
+        System.out.println(history);
     }
 }
