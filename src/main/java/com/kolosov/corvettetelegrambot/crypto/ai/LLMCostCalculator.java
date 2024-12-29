@@ -1,19 +1,19 @@
 package com.kolosov.corvettetelegrambot.crypto.ai;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.ai.autoconfigure.bedrock.converse.BedrockConverseProxyChatProperties;
 import org.springframework.ai.chat.metadata.Usage;
 import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
 @Service
+@RequiredArgsConstructor
 public class LLMCostCalculator {
 
-    @Value("${calculator.sonnet3.5.token.centcost.input}")
-    private BigDecimal centPerInputToken;
-    @Value("${calculator.sonnet3.5.token.centcost.output}")
-    private BigDecimal centPerOutputToken;
+    private final LLMCostProperties llmCostProperties;
+    private final BedrockConverseProxyChatProperties chatProperties;
 
     //returns expenses in cents
     public BigDecimal calculateCost(ChatResponse chatResponse) {
@@ -22,9 +22,21 @@ public class LLMCostCalculator {
         BigDecimal inputTokens = BigDecimal.valueOf(usage.getPromptTokens());
         BigDecimal outputTokens = BigDecimal.valueOf(usage.getGenerationTokens());
 
-        BigDecimal inputTokensCost = centPerInputToken.multiply(inputTokens);
-        BigDecimal outputTokensCost = centPerOutputToken.multiply(outputTokens);
+        String modelName = getModelName();
+        BigDecimal inputTokensCost = llmCostProperties.input().get(modelName).multiply(inputTokens);
+        BigDecimal outputTokensCost = llmCostProperties.output().get(modelName).multiply(outputTokens);
 
         return inputTokensCost.add(outputTokensCost);
+    }
+
+    @SuppressWarnings("DataFlowIssue")
+    private String getModelName() {
+        String model = chatProperties.getOptions().getModel();
+        if (model.contains("sonnet")) {
+            return "sonnet";
+        } else if (model.contains("opus")) {
+            return "opus";
+        }
+        throw new RuntimeException("No such model: " + model);
     }
 }
