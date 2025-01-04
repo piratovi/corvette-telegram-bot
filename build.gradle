@@ -32,6 +32,7 @@ ext {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.ai:spring-ai-bedrock-converse-spring-boot-starter'
+    implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
 
     implementation 'org.telegram:telegrambots-springboot-longpolling-starter:8.0.0'
     implementation 'org.telegram:telegrambots-client:8.0.0'

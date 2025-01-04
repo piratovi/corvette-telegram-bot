@@ -1,6 +1,8 @@
 package com.kolosov.corvettetelegrambot.crypto.ai;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.autoconfigure.bedrock.converse.BedrockConverseProxyChatProperties;
 import org.springframework.ai.chat.metadata.Usage;
 import org.springframework.ai.chat.model.ChatResponse;
@@ -12,6 +14,8 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class LLMCostCalculator {
 
+    protected final Logger logger = LoggerFactory.getLogger(LLMCostCalculator.class);
+
     private final LLMCostProperties llmCostProperties;
     private final BedrockConverseProxyChatProperties chatProperties;
 
@@ -21,6 +25,8 @@ public class LLMCostCalculator {
 
         BigDecimal inputTokens = BigDecimal.valueOf(usage.getPromptTokens());
         BigDecimal outputTokens = BigDecimal.valueOf(usage.getGenerationTokens());
+        logger.info("Input tokens: {}", inputTokens);
+        logger.info("Output tokens: {}", outputTokens);
 
         String modelName = getModelName();
         BigDecimal inputTokensCost = llmCostProperties.input().get(modelName).multiply(inputTokens);
