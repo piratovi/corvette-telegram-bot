@@ -1,13 +1,16 @@
 package com.kolosov.corvettetelegrambot.bot;
 
 import com.kolosov.corvettetelegrambot.crypto.TonService;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsumer;
+import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
@@ -22,6 +25,15 @@ public class CommandHandler implements LongPollingUpdateConsumer {
 
     @Value("${ALLOWED_USER_ID}")
     private Long allowedUserId;
+
+    @SneakyThrows
+    @PostConstruct
+    private void registerCommands() {
+        SetMyCommands setMyCommands = SetMyCommands.builder()
+                .command(BotCommand.builder().command("ton").description("TON quotes").build())
+                .build();
+        telegramClient.execute(setMyCommands);
+    }
 
     @Override
     public void consume(List<Update> updates) {
@@ -45,8 +57,7 @@ public class CommandHandler implements LongPollingUpdateConsumer {
 
     private String generateReply(String requestText) {
         switch (requestText) {
-            case "Ton":
-            case "ton":
+            case "/ton":
                 return String.valueOf(tonService.getTonQuote());
             default: {
                 return "Wrong command";
