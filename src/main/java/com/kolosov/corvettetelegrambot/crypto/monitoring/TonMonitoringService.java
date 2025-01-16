@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TonMonitoringService {
 
-    private static final int EVERY_10_MINUTES = 10 * 60 * 1_000;
+    private static final int EVERY_30_MINUTES = 30 * 60 * 1_000;
     private final TonService tonService;
     private final PersonalTelegramClient personalTelegramClient;
 
@@ -63,9 +63,10 @@ public class TonMonitoringService {
         );
     }
 
-    @Scheduled(fixedRate = EVERY_10_MINUTES)
+    @Scheduled(fixedRate = EVERY_30_MINUTES)
     public void monitorTon() {
         UsdQuote quote = tonService.getTonQuote();
+        personalTelegramClient.refreshMonitoringMessage("TON : %5.2f".formatted(quote.price()));
         strategies.forEach(strategy -> strategy.execute(quote));
     }
 

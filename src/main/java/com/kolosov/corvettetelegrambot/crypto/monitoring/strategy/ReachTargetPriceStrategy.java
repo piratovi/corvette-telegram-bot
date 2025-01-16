@@ -20,7 +20,7 @@ public class ReachTargetPriceStrategy extends AbstractNotificationStrategy {
     @Override
     public String prepareNotificationMessage(UsdQuote quote) {
         return """
-                Reached price = %f %%
+                Reached price = %f
                 """.formatted(targetPrice);
     }
 

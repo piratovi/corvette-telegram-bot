@@ -20,7 +20,7 @@ public abstract class AbstractNotificationStrategy {
     public void execute(UsdQuote quote) {
         if (condition(quote)) {
             String message = prepareNotificationMessage(quote);
-            personalTelegramClient.execute(message);
+            personalTelegramClient.send(message);
             lastNotificationDate = LocalDateTime.now();
             logger.info(message);
         }
