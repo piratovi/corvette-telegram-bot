@@ -10,7 +10,7 @@ import org.telegram.telegrambots.longpolling.starter.SpringLongPollingBot;
 @RequiredArgsConstructor
 public class CorvetteTelegramBot implements SpringLongPollingBot {
 
-    private final CommandHandler commandHandler;
+    private final CommandRouter commandHandler;
 
     @Value("${CORVETTE_TELEGRAM_BOT_TOKEN}")
     private String token;

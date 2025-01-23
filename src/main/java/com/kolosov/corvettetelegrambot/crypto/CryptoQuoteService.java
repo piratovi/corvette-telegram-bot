@@ -10,18 +10,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
-import static com.kolosov.corvettetelegrambot.crypto.Cryptocurrency.TON;
-
 @Service
 @RequiredArgsConstructor
-public class TonService {
+public class CryptoQuoteService {
 
-    private final Logger logger = LoggerFactory.getLogger(TonService.class);
+    private final Logger logger = LoggerFactory.getLogger(CryptoQuoteService.class);
     private final CoinMarketCapAPI coinMarketCapAPI;
 
-    public UsdQuote getTonQuote() {
-        QuoteResponse quoteResponse = coinMarketCapAPI.getQuotes(Map.of("symbol", TON));
-        UsdQuote usdQuote = quoteResponse.data().coins().get(TON.name()).quote().usd();
+    public UsdQuote getTonQuote(String cryptocurrency) {
+        cryptocurrency = cryptocurrency.toUpperCase();
+        QuoteResponse quoteResponse = coinMarketCapAPI.getQuotes(Map.of("symbol", cryptocurrency));
+        UsdQuote usdQuote = quoteResponse.data().coins().get(cryptocurrency).quote().usd();
         logger.info(usdQuote.toString());
         return usdQuote;
 

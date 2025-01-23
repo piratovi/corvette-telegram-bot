@@ -1,7 +1,7 @@
 package com.kolosov.corvettetelegrambot.crypto.monitoring;
 
 import com.kolosov.corvettetelegrambot.PersonalTelegramClient;
-import com.kolosov.corvettetelegrambot.crypto.TonService;
+import com.kolosov.corvettetelegrambot.crypto.CryptoQuoteService;
 import com.kolosov.corvettetelegrambot.crypto.coinmarketcap.dto.UsdQuote;
 import com.kolosov.corvettetelegrambot.crypto.monitoring.strategy.*;
 import jakarta.annotation.PostConstruct;
@@ -12,13 +12,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.kolosov.corvettetelegrambot.crypto.Cryptocurrency.TON;
+
 //TODO refactor
 @Service
 @RequiredArgsConstructor
 public class TonMonitoringService {
 
     private static final int EVERY_30_MINUTES = 30 * 60 * 1_000;
-    private final TonService tonService;
+    private final CryptoQuoteService cryptoQuoteService;
     private final PersonalTelegramClient personalTelegramClient;
 
     @Value("${SELLING_PRICE}")
@@ -65,7 +67,7 @@ public class TonMonitoringService {
 
     @Scheduled(fixedRate = EVERY_30_MINUTES)
     public void monitorTon() {
-        UsdQuote quote = tonService.getTonQuote();
+        UsdQuote quote = cryptoQuoteService.getTonQuote(TON.name());
         personalTelegramClient.refreshMonitoringMessage("TON : %5.2f".formatted(quote.price()));
         strategies.forEach(strategy -> strategy.execute(quote));
     }
