@@ -1,6 +1,7 @@
 package com.kolosov.corvettetelegrambot.bot;
 
 import com.kolosov.corvettetelegrambot.PersonalTelegramClient;
+import com.kolosov.corvettetelegrambot.bot.handlers.CryptoQuoteHandler;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

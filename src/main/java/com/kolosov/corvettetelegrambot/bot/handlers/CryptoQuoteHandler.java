@@ -1,4 +1,4 @@
-package com.kolosov.corvettetelegrambot.bot;
+package com.kolosov.corvettetelegrambot.bot.handlers;
 
 import com.kolosov.corvettetelegrambot.PersonalTelegramClient;
 import com.kolosov.corvettetelegrambot.crypto.CryptoQuoteService;

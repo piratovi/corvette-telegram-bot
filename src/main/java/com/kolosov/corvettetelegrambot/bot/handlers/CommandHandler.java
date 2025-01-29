@@ -1,4 +1,4 @@
-package com.kolosov.corvettetelegrambot.bot;
+package com.kolosov.corvettetelegrambot.bot.handlers;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
 
