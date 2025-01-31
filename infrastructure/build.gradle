@@ -1,17 +1,30 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group = 'com.kolosov'
 version = '0.0.1-SNAPSHOT'
+// Use the same Java version as parent for consistency
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(23)
+    }
+}
 
 repositories {
     mavenCentral()
 }
 
+application {
+    mainClass = 'com.kolosov.Main'  // Adjust this to your actual CDK app class
+}
+
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation "software.amazon.awscdk:aws-cdk-lib:2.177.0"
+    implementation "software.constructs:constructs:[10.0.0,11.0.0)"
+    
+    testImplementation "org.junit.jupiter:junit-jupiter:5.7.1"
 }
 
 test {
