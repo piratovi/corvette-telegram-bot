@@ -17,7 +17,7 @@ repositories {
 }
 
 application {
-    mainClass = 'com.kolosov.Main'  // Adjust this to your actual CDK app class
+    mainClass = 'com.kolosov.Main'
 }
 
 dependencies {

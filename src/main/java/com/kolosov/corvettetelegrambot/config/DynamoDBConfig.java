@@ -21,7 +21,7 @@ public class DynamoDBConfig {
 
     @Bean
     public DynamoDbTable<CryptoOrder> cryptoOrderTable(DynamoDbEnhancedClient enhancedClient) {
-        return enhancedClient.table(CryptoOrder.class.getSimpleName(),
+        return enhancedClient.table("crypto-orders",
                 TableSchema.fromBean(CryptoOrder.class));
     }
 } 

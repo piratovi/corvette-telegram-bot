@@ -1,7 +1,7 @@
 package com.kolosov.corvettetelegrambot.crypto;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 import lombok.Data;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
@@ -10,9 +10,9 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbParti
 @Data
 @DynamoDbBean
 public class CryptoOrder {
+    
     private String id;
-    private LocalDateTime createdAt;
-    private String orderId;
+    private ZonedDateTime createdAt;
     private String cryptoCurrency;
     private OrderType type;
     private OrderStatus status;

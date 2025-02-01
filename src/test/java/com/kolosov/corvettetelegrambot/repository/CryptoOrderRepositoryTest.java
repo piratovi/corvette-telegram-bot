@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,8 +28,8 @@ class CryptoOrderRepositoryTest {
         // given
         CryptoOrder order = new CryptoOrder();
         order.setId(UUID.randomUUID().toString());
-        order.setCreatedAt(LocalDateTime.now());
-        order.setCryptoCurrency("BTC");
+        order.setCreatedAt(ZonedDateTime.now());
+        order.setCryptoCurrency("TON");
         order.setAmount(BigDecimal.ONE);
         order.setPrice(BigDecimal.valueOf(50000));
 
@@ -39,6 +39,6 @@ class CryptoOrderRepositoryTest {
 
         // then
         assertThat(found).isPresent();
-        assertThat(found.get().getCryptoCurrency()).isEqualTo("BTC");
+        assertThat(found.get().getCryptoCurrency()).isEqualTo("TON");
     }
 } 
