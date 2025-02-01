@@ -1,0 +1,3 @@
+Prepare cloudformation template:
+cdk --app "..\\gradlew -q run" synth CryptoOrderStack --validation true
+(in Linux) you need to change slashes. 

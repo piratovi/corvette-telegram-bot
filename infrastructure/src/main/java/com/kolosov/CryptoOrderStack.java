@@ -23,7 +23,6 @@ public class CryptoOrderStack extends Stack {
                 .type(AttributeType.STRING)
                 .build())
             .billingMode(BillingMode.PAY_PER_REQUEST)
-            .timeToLiveAttribute("ttl")  // Optional: if you want to add TTL
             .build();
     }
 } 

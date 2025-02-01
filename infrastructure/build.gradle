@@ -5,7 +5,7 @@ plugins {
 
 group = 'com.kolosov'
 version = '0.0.1-SNAPSHOT'
-// Use the same Java version as parent for consistency
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(23)
