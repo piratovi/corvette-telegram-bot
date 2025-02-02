@@ -9,11 +9,12 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 
 @Configuration
-public class DynamoDBConfig extends BaseDynamoDBConfig {
+@Profile("dev")
+public class TestDynamoDBConfig extends BaseDynamoDBConfig {
 
     @Bean
     public DynamoDbTable<CryptoOrder> cryptoOrderTable(DynamoDbEnhancedClient enhancedClient) {
-        return enhancedClient.table("crypto-orders",
+        return enhancedClient.table("dev-crypto-orders",
                 TableSchema.fromBean(CryptoOrder.class));
     }
 } 

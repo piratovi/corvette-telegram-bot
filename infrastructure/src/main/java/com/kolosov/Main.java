@@ -9,7 +9,8 @@ public class Main {
         App app = new App();
 
         new CryptoOrderStack(app, "CryptoOrderStack");
-
+        new DevCryptoOrderStack(app, "DevCryptoOrderStack");
+        
         app.synth();
     }
 }

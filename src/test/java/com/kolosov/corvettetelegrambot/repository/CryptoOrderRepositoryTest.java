@@ -1,6 +1,7 @@
 package com.kolosov.corvettetelegrambot.repository;
 
 import com.kolosov.corvettetelegrambot.config.DynamoDBConfig;
+import com.kolosov.corvettetelegrambot.config.TestDynamoDBConfig;
 import com.kolosov.corvettetelegrambot.crypto.CryptoOrder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = {
     CryptoOrderRepository.class,
-    DynamoDBConfig.class
+    TestDynamoDBConfig.class
 })
 @ActiveProfiles("dev")
 class CryptoOrderRepositoryTest {

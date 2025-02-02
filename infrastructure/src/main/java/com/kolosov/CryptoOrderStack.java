@@ -14,10 +14,16 @@ public class CryptoOrderStack extends Stack {
     }
 
     public CryptoOrderStack(final Construct scope, final String id, final StackProps props) {
+        this(scope, id, props, null);
+    }
+
+    public CryptoOrderStack(final Construct scope, final String id, final StackProps props, String stage) {
         super(scope, id, props);
 
+        String tableName = "dev".equals(stage) ? "dev-crypto-orders" : "crypto-orders";
+        
         Table.Builder.create(this, "CryptoOrderTable")
-            .tableName("crypto-orders")
+            .tableName(tableName)
             .partitionKey(Attribute.builder()
                 .name("id")
                 .type(AttributeType.STRING)
