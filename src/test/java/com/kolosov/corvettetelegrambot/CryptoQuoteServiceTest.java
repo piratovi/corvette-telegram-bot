@@ -19,7 +19,7 @@ public class CryptoQuoteServiceTest {
 
     @Test
     public void basicGet() {
-        UsdQuote tonQuote = cryptoQuoteService.getTonQuote(TON.name());
+        UsdQuote tonQuote = cryptoQuoteService.getQuote(TON.name());
         System.out.println(tonQuote);
     }
 }

@@ -17,7 +17,7 @@ public class CryptoQuoteService {
     private final Logger logger = LoggerFactory.getLogger(CryptoQuoteService.class);
     private final CoinMarketCapAPI coinMarketCapAPI;
 
-    public UsdQuote getTonQuote(String cryptocurrency) {
+    public UsdQuote getQuote(String cryptocurrency) {
         cryptocurrency = cryptocurrency.toUpperCase();
         QuoteResponse quoteResponse = coinMarketCapAPI.getQuotes(Map.of("symbol", cryptocurrency));
         UsdQuote usdQuote = quoteResponse.data().coins().get(cryptocurrency).quote().usd();

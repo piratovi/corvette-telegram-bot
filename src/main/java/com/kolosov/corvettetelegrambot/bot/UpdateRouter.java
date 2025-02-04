@@ -27,7 +27,7 @@ public class UpdateRouter implements LongPollingUpdateConsumer {
     private final TelegramClient telegramClient;
     private final PersonalTelegramClient personalTelegramClient;
     private final MessageRouter messageRouter;
-    private final CallbackQueryRouter callbackQueryRouter;
+    private final CallbackRouter callbackQueryRouter;
 
     @SneakyThrows
     @PostConstruct
@@ -65,7 +65,7 @@ public class UpdateRouter implements LongPollingUpdateConsumer {
         if (update.hasMessage() && update.getMessage().hasText()) {
             messageRouter.process(update.getMessage());
         } else if (update.hasCallbackQuery()) {
-            callbackQueryRouter.handle(update.getCallbackQuery());
+            callbackQueryRouter.process(update.getCallbackQuery());
         }
     }
 

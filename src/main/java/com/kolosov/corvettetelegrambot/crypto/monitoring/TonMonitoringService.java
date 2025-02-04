@@ -67,7 +67,7 @@ public class TonMonitoringService {
 
     @Scheduled(fixedRate = EVERY_30_MINUTES)
     public void monitorTon() {
-        UsdQuote quote = cryptoQuoteService.getTonQuote(TON.name());
+        UsdQuote quote = cryptoQuoteService.getQuote(TON.name());
         personalTelegramClient.refreshMonitoringMessage("TON : %5.2f".formatted(quote.price()));
         strategies.forEach(strategy -> strategy.execute(quote));
     }
