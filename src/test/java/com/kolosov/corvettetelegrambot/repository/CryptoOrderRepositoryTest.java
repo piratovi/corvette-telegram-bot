@@ -1,6 +1,6 @@
 package com.kolosov.corvettetelegrambot.repository;
 
-import com.kolosov.corvettetelegrambot.config.DynamoDBConfig;
+import com.kolosov.corvettetelegrambot.configuration.DynamoDBConfig;
 import com.kolosov.corvettetelegrambot.crypto.CryptoOrder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;

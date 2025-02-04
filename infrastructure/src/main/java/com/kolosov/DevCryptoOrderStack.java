@@ -1,7 +1,5 @@
 package com.kolosov;
 
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
 import software.constructs.Construct;
 
 public class DevCryptoOrderStack extends CryptoOrderStack {

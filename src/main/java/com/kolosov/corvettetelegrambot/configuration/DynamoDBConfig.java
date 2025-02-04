@@ -1,4 +1,4 @@
-package com.kolosov.corvettetelegrambot.config;
+package com.kolosov.corvettetelegrambot.configuration;
 
 import com.kolosov.corvettetelegrambot.crypto.CryptoOrder;
 import org.springframework.context.annotation.Bean;

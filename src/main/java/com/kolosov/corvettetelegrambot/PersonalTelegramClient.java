@@ -11,6 +11,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
+import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 @Service
 @RequiredArgsConstructor
@@ -36,12 +38,6 @@ public class PersonalTelegramClient {
         telegramClient.execute(responseMessage);
     }
 
-    @SneakyThrows
-    public void send(SendMessage sendMessage) {
-        sendMessage.setChatId(allowedChatId);
-        telegramClient.execute(sendMessage);
-    }
-
     public void refreshMonitoringMessage(String message) {
         EditMessageText editMessageText = EditMessageText.builder()
                 .chatId(allowedChatId)
@@ -55,7 +51,17 @@ public class PersonalTelegramClient {
         }
     }
 
-    public boolean isAllowedUser(Long userId) {
-        return allowedUserId.equals(userId);
+    public boolean isUserAllowed(User user) {
+        return allowedUserId.equals(user.getId());
+    }
+
+    @SneakyThrows
+    public void sendWithKeyboard(String text, InlineKeyboardMarkup keyboardMarkup) {
+        var message = SendMessage.builder()
+                .chatId(allowedChatId)
+                .text(text)
+                .replyMarkup(keyboardMarkup)
+                .build();
+        telegramClient.execute(message);
     }
 }

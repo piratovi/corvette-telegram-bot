@@ -1,10 +1,7 @@
 package com.kolosov.corvettetelegrambot.bot;
 
-import com.kolosov.corvettetelegrambot.PersonalTelegramClient;
-import com.kolosov.corvettetelegrambot.bot.handlers.CryptoQuoteHandler;
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -14,17 +11,23 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
-import java.util.List;
+import com.kolosov.corvettetelegrambot.PersonalTelegramClient;
+
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
 @Service
-@RequiredArgsConstructor
-public class CommandRouter implements LongPollingUpdateConsumer {
 
-    protected final Logger logger = LoggerFactory.getLogger(CommandRouter.class);
+@RequiredArgsConstructor
+public class UpdateRouter implements LongPollingUpdateConsumer {
+
+    protected final Logger logger = LoggerFactory.getLogger(UpdateRouter.class);
 
     private final TelegramClient telegramClient;
     private final PersonalTelegramClient personalTelegramClient;
-    private final CryptoQuoteHandler cryptoQuoteHandler;
+    private final MessageRouter messageRouter;
+    private final CallbackQueryRouter callbackQueryRouter;
 
     @SneakyThrows
     @PostConstruct
@@ -46,39 +49,24 @@ public class CommandRouter implements LongPollingUpdateConsumer {
 
     @Override
     public void consume(List<Update> updates) {
-        updates.forEach(update -> {
-            if (update.hasMessage() && update.getMessage().hasText()) {
-                processReceivedUpdateWithExceptionHandling(update);
-            }
-        });
+        updates.forEach(this::processReceivedUpdateWithExceptionHandling);
     }
 
     private void processReceivedUpdateWithExceptionHandling(Update update) {
         try {
-            processReceivedMessage(update);
+            process(update);
         } catch (Exception e) {
             logger.error(e.getMessage());
             personalTelegramClient.send(e.getMessage());
         }
     }
 
-    private void processReceivedMessage(Update update) {
-        Long userId = update.getMessage().getFrom().getId();
-        if (personalTelegramClient.isAllowedUser(userId)) {
-            route(update);
+    private void process(Update update) {
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            messageRouter.process(update.getMessage());
+        } else if (update.hasCallbackQuery()) {
+            callbackQueryRouter.handle(update.getCallbackQuery());
         }
     }
 
-    private void route(Update update) {
-        String requestText = update.getMessage().getText();
-        if (requestText.startsWith("/quote")) {
-            cryptoQuoteHandler.handle(update);
-            return;
-        }
-        if (requestText.startsWith("/orders")) {
-            // orders handling
-            return;
-        }
-        personalTelegramClient.send("Wrong command");
-    }
 }
