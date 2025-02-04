@@ -18,33 +18,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 @Service
-
 @RequiredArgsConstructor
 public class UpdateRouter implements LongPollingUpdateConsumer {
 
     protected final Logger logger = LoggerFactory.getLogger(UpdateRouter.class);
 
-    private final TelegramClient telegramClient;
     private final PersonalTelegramClient personalTelegramClient;
     private final MessageRouter messageRouter;
     private final CallbackRouter callbackQueryRouter;
+    private final CommandRegistrationService commandRegistrationService;
 
-    @SneakyThrows
     @PostConstruct
-    private void registerCommands() {
-        List<BotCommand> commands = preparePredefinedCommands();
-        SetMyCommands setMyCommands = SetMyCommands.builder()
-                .commands(commands)
-                .build();
-        telegramClient.execute(setMyCommands);
-    }
-
-    private List<BotCommand> preparePredefinedCommands() {
-        BotCommand command = BotCommand.builder()
-                .command("quote")
-                .description("crypto quotes")
-                .build();
-        return List.of(command);
+    private void init() {
+        commandRegistrationService.registerCommands();
     }
 
     @Override
