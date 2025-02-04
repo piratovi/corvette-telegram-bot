@@ -17,7 +17,7 @@ public class MessageRouter {
     private final CryptoQuoteHandler cryptoQuoteHandler;
     private final PersonalTelegramClient personalTelegramClient;
     private final CryptoOrderHandler cryptoOrdersHandler;
-    
+
     public void process(Message message) {
         User user = message.getFrom();
         if (personalTelegramClient.isUserAllowed(user)) {
@@ -28,7 +28,7 @@ public class MessageRouter {
     private void route(Message message) {
         String requestText = message.getText();
         String command = requestText.split(" ")[0];
-        
+
         switch (command) {
             case CryptoQuoteHandler.COMMAND -> cryptoQuoteHandler.handle(message);
             case CryptoOrderHandler.COMMAND -> cryptoOrdersHandler.handle(message);

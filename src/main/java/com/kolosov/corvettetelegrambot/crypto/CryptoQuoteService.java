@@ -23,6 +23,5 @@ public class CryptoQuoteService {
         UsdQuote usdQuote = quoteResponse.data().coins().get(cryptocurrency).quote().usd();
         logger.info(usdQuote.toString());
         return usdQuote;
-
     }
 }
