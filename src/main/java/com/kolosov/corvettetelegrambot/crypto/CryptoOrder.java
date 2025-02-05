@@ -19,8 +19,29 @@ public class CryptoOrder {
     private BigDecimal price;
     private BigDecimal amount;
 
+    @Override
+    public String toString() {
+        return String.format("""
+                🔹 Order     #%s
+                📅 Created:  %s
+                💱 Currency: %s
+                📊 Type:     %s
+                📈 Status:   %s
+                💰 Price:    %.2f
+                📦 Amount:   %.4f""",
+                id,
+                createdAt.toLocalDateTime(),
+                cryptoCurrency,
+                type,
+                status,
+                price,
+                amount);
+    }
+
     @DynamoDbPartitionKey
     public String getId() {
         return id;
     }
+
+    
 }

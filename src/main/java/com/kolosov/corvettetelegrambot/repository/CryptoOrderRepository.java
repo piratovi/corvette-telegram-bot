@@ -32,4 +32,10 @@ public class CryptoOrderRepository {
     public void delete(CryptoOrder order) {
         table.deleteItem(order);
     }
+
+    public void deleteById(String id) {
+        table.deleteItem(r -> r.key(k -> k.partitionValue(id)));
+    }
+
+    
 }

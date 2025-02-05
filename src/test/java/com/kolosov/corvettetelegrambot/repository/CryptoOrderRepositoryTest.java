@@ -98,4 +98,24 @@ class CryptoOrderRepositoryTest {
         // then
         assertThat(repository.findById(order.getId())).isEmpty();
     }
+
+    @Test
+    void shouldDeleteOrderById() {
+        // given
+        CryptoOrder order = new CryptoOrder();
+        order.setId(UUID.randomUUID().toString());
+        order.setCreatedAt(ZonedDateTime.now());
+        order.setCryptoCurrency("ETH");
+        order.setAmount(BigDecimal.ONE);
+        order.setPrice(BigDecimal.valueOf(3000));
+
+        repository.save(order);
+        assertThat(repository.findById(order.getId())).isPresent();
+
+        // when
+        repository.deleteById(order.getId());
+
+        // then
+        assertThat(repository.findById(order.getId())).isEmpty();
+    }
 } 

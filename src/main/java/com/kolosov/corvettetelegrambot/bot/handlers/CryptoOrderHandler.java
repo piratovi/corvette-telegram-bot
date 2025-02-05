@@ -10,6 +10,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
 
 import com.kolosov.corvettetelegrambot.PersonalTelegramClient;
+import com.kolosov.corvettetelegrambot.bot.dto.CallbackDTO;
+import com.kolosov.corvettetelegrambot.bot.dto.MessageDTO;
+import com.kolosov.corvettetelegrambot.crypto.CryptoOrder;
 import com.kolosov.corvettetelegrambot.repository.CryptoOrderRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CryptoOrderHandler {
 
+        public static final String EDIT = "Edit";
+        public static final String DELETE = "Delete";
         public static final String BASE = "order";
         public static final String COMMAND = "/" + BASE;
         private static final String SHOW_ALL = "Show All";
@@ -25,9 +30,8 @@ public class CryptoOrderHandler {
 
         private final CryptoOrderRepository cryptoOrderRepository;
         private final PersonalTelegramClient personalTelegramClient;
-        private final HandlerHelper handlerHelper;
 
-        public void handle(Message message) {
+        public void handle(MessageDTO message) {
                 var showAllButton = InlineKeyboardButton.builder()
                                 .text(SHOW_ALL)
                                 .callbackData(BASE + " " + SHOW_ALL)
@@ -47,12 +51,24 @@ public class CryptoOrderHandler {
                 personalTelegramClient.sendWithKeyboard("Select action:", keyboardMarkup);
         }
 
-        public void handle(CallbackQuery callback) {
-                String command = callback.getData().substring(BASE.length() + 1);
-                switch (command) {
-                        case SHOW_ALL -> showAll();
-                        case CREATE -> create();
-                }
+        public void handle(CallbackDTO callback) {
+                callback.subcommand().ifPresent(subcommand -> {
+                        switch (subcommand) {
+                                case SHOW_ALL -> showAll();
+                                case CREATE -> create();
+                                case EDIT -> edit(callback.argument().orElseThrow());
+                                case DELETE -> delete(callback.argument().orElseThrow());
+                        }
+                });
+        }
+
+        private void delete(String id) {
+                cryptoOrderRepository.deleteById(id);
+        }
+
+        private Object edit(String data) {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented method 'edit'");
         }
 
         private void create() {
@@ -61,8 +77,28 @@ public class CryptoOrderHandler {
         }
 
         private void showAll() {
-                // TODO Auto- method stub
-                throw new UnsupportedOperationException("Unimplemented method 'showAll'");
+                List<CryptoOrder> orders = cryptoOrderRepository.findAll();
+                orders.forEach(order -> show(order));
+        }
+
+        private void show(CryptoOrder order) {
+                var editButton = InlineKeyboardButton.builder()
+                                .text(EDIT)
+                                .callbackData(BASE + " " + EDIT + " " + order.getId())
+                                .build();
+
+                var deleteButton = InlineKeyboardButton.builder()
+                                .text(DELETE)
+                                .callbackData(BASE + " " + DELETE + " " + order.getId())
+                                .build();
+
+                var keyboardRow = new InlineKeyboardRow(List.of(editButton, deleteButton));
+
+                var keyboardMarkup = InlineKeyboardMarkup.builder()
+                                .keyboardRow(keyboardRow)
+                                .build();
+
+                personalTelegramClient.sendWithKeyboard(order.toString(), keyboardMarkup);
         }
 
 }

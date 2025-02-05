@@ -10,8 +10,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
 
 import com.kolosov.corvettetelegrambot.PersonalTelegramClient;
+import com.kolosov.corvettetelegrambot.bot.dto.CallbackDTO;
 import com.kolosov.corvettetelegrambot.crypto.CryptoQuoteService;
 import com.kolosov.corvettetelegrambot.crypto.coinmarketcap.dto.UsdQuote;
+import com.kolosov.corvettetelegrambot.bot.dto.MessageDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,11 +28,9 @@ public class CryptoQuoteHandler {
 
     private final CryptoQuoteService cryptoQuoteService;
     private final PersonalTelegramClient personalTelegramClient;
-    private final HandlerHelper handlerHelper;
 
-    public void handle(Message message) {
-        handlerHelper.getArgument(message)
-                // TODO refactor to only menu message
+    public void handle(MessageDTO message) {
+        message.argument()
                 .ifPresentOrElse(
                         this::sendQuoteMessage,
                         this::sendMenuMessage);
@@ -61,9 +61,10 @@ public class CryptoQuoteHandler {
         personalTelegramClient.sendWithKeyboard("Select cryptocurrency:", keyboardMarkup);
     }
 
-    public void handle(CallbackQuery callback) {
-        String symbol = callback.getData().substring((BASE + " ").length());
-        UsdQuote quote = cryptoQuoteService.getQuote(symbol);
-        personalTelegramClient.send(quote.toString());
+    public void handle(CallbackDTO callback) {
+        callback.subcommand()
+                .ifPresentOrElse(
+                        this::sendQuoteMessage,
+                        this::sendMenuMessage);
     }
 }
