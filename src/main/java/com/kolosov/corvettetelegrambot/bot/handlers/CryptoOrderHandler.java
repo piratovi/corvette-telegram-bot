@@ -27,7 +27,7 @@ public class CryptoOrderHandler {
         public static final String COMMAND = "/" + BASE;
 
         private static final String SHOW_ALL = "show_all";
-        private static final String CREATE = "create";
+        private static final String CREATE = "start_creation";
         private static final String EDIT = "edit";
         private static final String DELETE = "delete";
 
