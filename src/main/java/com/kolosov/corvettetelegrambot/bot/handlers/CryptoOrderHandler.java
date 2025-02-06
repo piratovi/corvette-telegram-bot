@@ -1,6 +1,7 @@
 package com.kolosov.corvettetelegrambot.bot.handlers;
 
 import java.util.List;
+import java.util.LinkedList;
 
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -12,6 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import com.kolosov.corvettetelegrambot.PersonalTelegramClient;
 import com.kolosov.corvettetelegrambot.bot.dto.CallbackDTO;
 import com.kolosov.corvettetelegrambot.bot.dto.MessageDTO;
+import com.kolosov.corvettetelegrambot.bot.services.CryptoOrderCreator;
 import com.kolosov.corvettetelegrambot.crypto.CryptoOrder;
 import com.kolosov.corvettetelegrambot.repository.CryptoOrderRepository;
 
@@ -21,24 +23,30 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CryptoOrderHandler {
 
-        public static final String EDIT = "Edit";
-        public static final String DELETE = "Delete";
         public static final String BASE = "order";
         public static final String COMMAND = "/" + BASE;
-        private static final String SHOW_ALL = "Show All";
-        private static final String CREATE = "Create";
+
+        private static final String SHOW_ALL = "show_all";
+        private static final String CREATE = "create";
+        private static final String EDIT = "edit";
+        private static final String DELETE = "delete";
 
         private final CryptoOrderRepository cryptoOrderRepository;
         private final PersonalTelegramClient personalTelegramClient;
+        private final CryptoOrderCreator cryptoOrderCreator;
 
         public void handle(MessageDTO message) {
+                sendMenuMessage();
+        }
+
+        private void sendMenuMessage() {
                 var showAllButton = InlineKeyboardButton.builder()
-                                .text(SHOW_ALL)
+                                .text("Show all")
                                 .callbackData(BASE + " " + SHOW_ALL)
                                 .build();
 
                 var createButton = InlineKeyboardButton.builder()
-                                .text(CREATE)
+                                .text("Create")
                                 .callbackData(BASE + " " + CREATE)
                                 .build();
 
@@ -51,29 +59,14 @@ public class CryptoOrderHandler {
                 personalTelegramClient.sendWithKeyboard("Select action:", keyboardMarkup);
         }
 
-        public void handle(CallbackDTO callback) {
-                callback.subcommand().ifPresent(subcommand -> {
-                        switch (subcommand) {
-                                case SHOW_ALL -> showAll();
-                                case CREATE -> create();
-                                case EDIT -> edit(callback.argument().orElseThrow());
-                                case DELETE -> delete(callback.argument().orElseThrow());
-                        }
-                });
-        }
-
-        private void delete(String id) {
-                cryptoOrderRepository.deleteById(id);
-        }
-
-        private Object edit(String data) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'edit'");
-        }
-
-        private void create() {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'create'");
+        public void handleCallbackCommands(LinkedList<String> commands) {
+                String subcommand = commands.removeFirst();
+                switch (subcommand) {
+                        case SHOW_ALL   -> showAll();
+                        case CREATE     -> create();
+                        case EDIT       -> edit(commands);
+                        case DELETE     -> delete(commands.removeFirst());
+                }
         }
 
         private void showAll() {
@@ -100,5 +93,24 @@ public class CryptoOrderHandler {
 
                 personalTelegramClient.sendWithKeyboard(order.toString(), keyboardMarkup);
         }
+        
+        private void create() {
+                cryptoOrderCreator.startCreation();
+        }
+        
+        private void delete(String id) {
+                // TODO: erase message from chat
+                cryptoOrderRepository.deleteById(id);
+        }
+
+        private void edit(LinkedList<String> commands) {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented method 'edit'");
+        }
+
+
+        
+
+
 
 }

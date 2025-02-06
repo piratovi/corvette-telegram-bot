@@ -1,6 +1,7 @@
 package com.kolosov.corvettetelegrambot.bot;
 
-import java.util.Optional;
+import java.util.Collections;
+import java.util.LinkedList;
 
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -9,7 +10,6 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import com.kolosov.corvettetelegrambot.PersonalTelegramClient;
 import com.kolosov.corvettetelegrambot.bot.handlers.CryptoOrderHandler;
 import com.kolosov.corvettetelegrambot.bot.handlers.CryptoQuoteHandler;
-import com.kolosov.corvettetelegrambot.bot.dto.CallbackDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -31,21 +31,20 @@ public class CallbackRouter {
 
     @SneakyThrows
     private void route(CallbackQuery callbackQuery) {
-        CallbackDTO callback = parseCallback(callbackQuery.getData());
-        
-        switch (callback.command()) {
-            case CryptoQuoteHandler.BASE -> cryptoQuoteHandler.handle(callback);
-            case CryptoOrderHandler.BASE -> cryptoOrderHandler.handle(callback);
+        LinkedList<String> commands = parseCallbackQuery(callbackQuery.getData());
+
+        String command = commands.removeFirst();
+        switch (command) {
+            case CryptoQuoteHandler.BASE -> cryptoQuoteHandler.handleCallbackCommands(commands);
+            case CryptoOrderHandler.BASE -> cryptoOrderHandler.handleCallbackCommands(commands);
             default -> personalTelegramClient.send("Unknown callback command");
         }
     }
 
-    private CallbackDTO parseCallback(String data) {
-        String[] parts = data.split(" ", 3);
-        return new CallbackDTO(
-            parts[0],
-            parts.length > 1 ? Optional.of(parts[1]) : Optional.empty(),
-            parts.length > 2 ? Optional.of(parts[2]) : Optional.empty()
-        );
+    private LinkedList<String> parseCallbackQuery(String data) {
+        String[] parts = data.split(" ");
+        LinkedList<String> commands = new LinkedList<>();
+        Collections.addAll(commands, parts);
+        return commands;
     }
 }
