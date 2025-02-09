@@ -1,22 +1,19 @@
 package com.kolosov.corvettetelegrambot.bot.handlers;
 
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
 
 import com.kolosov.corvettetelegrambot.PersonalTelegramClient;
-import com.kolosov.corvettetelegrambot.bot.dto.CallbackDTO;
 import com.kolosov.corvettetelegrambot.bot.dto.MessageDTO;
 import com.kolosov.corvettetelegrambot.bot.services.CryptoOrderCreator;
+import com.kolosov.corvettetelegrambot.bot.services.CryptoOrderDisplayService;
 import com.kolosov.corvettetelegrambot.crypto.CryptoOrder;
 import com.kolosov.corvettetelegrambot.repository.CryptoOrderRepository;
-import com.kolosov.corvettetelegrambot.bot.services.CryptoOrderDisplayService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -64,39 +61,35 @@ public class CryptoOrderHandler {
         public void handleCallbackCommands(LinkedList<String> commands) {
                 String subcommand = commands.removeFirst();
                 switch (subcommand) {
-                        case SHOW_ALL   -> showAll();
-                        case CREATE     -> create();
-                        case EDIT       -> edit(commands);
-                        case DELETE     -> delete(commands.removeFirst());
+                        case SHOW_ALL -> showAll();
+                        case CREATE -> create();
+                        case EDIT -> edit(commands);
+                        case DELETE -> delete(commands);
                 }
         }
 
         private void showAll() {
                 List<CryptoOrder> orders = cryptoOrderRepository.findAll();
-                orders.forEach(order -> show(order));
+                orders.forEach(this::show);
         }
 
         private void show(CryptoOrder order) {
                 cryptoOrderDisplayService.displayOrder(order, "");
         }
-        
+
         private void create() {
                 cryptoOrderCreator.startCreation();
         }
-        
-        private void delete(String id) {
-                // TODO: erase message from chat
+
+        private void delete(LinkedList<String> commands) {
+                String id = commands.removeFirst();
                 cryptoOrderRepository.deleteById(id);
         }
+
 
         private void edit(LinkedList<String> commands) {
                 // TODO Auto-generated method stub
                 throw new UnsupportedOperationException("Unimplemented method 'edit'");
         }
-
-
-        
-
-
 
 }
