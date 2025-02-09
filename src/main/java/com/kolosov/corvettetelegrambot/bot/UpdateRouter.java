@@ -2,8 +2,6 @@ package com.kolosov.corvettetelegrambot.bot;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsumer;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -12,6 +10,8 @@ import com.kolosov.corvettetelegrambot.PersonalTelegramClient;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +23,7 @@ public class UpdateRouter implements LongPollingUpdateConsumer {
     private final MessageRouter messageRouter;
     private final CallbackRouter callbackQueryRouter;
     private final CommandRegistrationService commandRegistrationService;
+    
 
     @PostConstruct
     private void init() {
@@ -38,7 +39,7 @@ public class UpdateRouter implements LongPollingUpdateConsumer {
         try {
             process(update);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("error", e);
             personalTelegramClient.send(e.getMessage());
         }
     }

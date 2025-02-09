@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import com.kolosov.corvettetelegrambot.PersonalTelegramClient;
 import com.kolosov.corvettetelegrambot.bot.handlers.CryptoOrderHandler;
 import com.kolosov.corvettetelegrambot.bot.handlers.CryptoQuoteHandler;
+import com.kolosov.corvettetelegrambot.bot.services.CryptoOrderCreator;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -21,6 +22,7 @@ public class CallbackRouter {
     private final PersonalTelegramClient personalTelegramClient;
     private final CryptoQuoteHandler cryptoQuoteHandler;
     private final CryptoOrderHandler cryptoOrderHandler;
+    private final CryptoOrderCreator cryptoOrderCreator;
 
     public void process(CallbackQuery callbackQuery) {
         User user = callbackQuery.getFrom();
@@ -37,8 +39,10 @@ public class CallbackRouter {
         switch (command) {
             case CryptoQuoteHandler.BASE -> cryptoQuoteHandler.handleCallbackCommands(commands);
             case CryptoOrderHandler.BASE -> cryptoOrderHandler.handleCallbackCommands(commands);
+            case CryptoOrderCreator.BASE -> cryptoOrderCreator.handleCallbackCommands(commands);
             default -> personalTelegramClient.send("Unknown callback command");
         }
+
     }
 
     private LinkedList<String> parseCallbackQuery(String data) {

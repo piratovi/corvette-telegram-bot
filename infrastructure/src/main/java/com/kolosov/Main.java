@@ -10,6 +10,8 @@ public class Main {
 
         new CryptoOrderStack(app, "CryptoOrderStack");
         new DevCryptoOrderStack(app, "DevCryptoOrderStack");
+        new BotStateStack(app, "BotStateStack");
+        new DevBotStateStack(app, "DevBotStateStack");
         
         app.synth();
     }

@@ -1,6 +1,7 @@
 package com.kolosov.corvettetelegrambot.configuration;
 
 import com.kolosov.corvettetelegrambot.crypto.CryptoOrder;
+import com.kolosov.corvettetelegrambot.bot.BotState;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -27,8 +28,15 @@ public class DynamoDBConfig {
     @Bean
     public DynamoDbTable<CryptoOrder> cryptoOrderTable(DynamoDbEnhancedClient enhancedClient) {
         String tablePrefix = isDevProfile() ? "dev-" : "";
-        return enhancedClient.table(tablePrefix + "crypto-orders",
+        return enhancedClient.table(tablePrefix + "crypto-order",
                 TableSchema.fromBean(CryptoOrder.class));
+    }
+
+    @Bean
+    public DynamoDbTable<BotState> botStateTable(DynamoDbEnhancedClient enhancedClient) {
+        String tablePrefix = isDevProfile() ? "dev-" : "";
+        return enhancedClient.table(tablePrefix + "bot-state",
+                TableSchema.fromBean(BotState.class));
     }
 
     private boolean isDevProfile() {

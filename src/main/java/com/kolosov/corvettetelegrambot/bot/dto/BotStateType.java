@@ -1,0 +1,9 @@
+package com.kolosov.corvettetelegrambot.bot.dto;
+
+public enum BotStateType {
+    IDLE,
+    CRYPTO_ORDER_CREATION_ASK_TYPE,
+    CRYPTO_ORDER_CREATION_ASK_CRYPTOCURRENCY,
+    CRYPTO_ORDER_CREATION_ASK_PRICE,
+    CRYPTO_ORDER_CREATION_ASK_AMOUNT
+}

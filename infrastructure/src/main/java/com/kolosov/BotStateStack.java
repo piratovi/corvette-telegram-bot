@@ -8,24 +8,28 @@ import software.amazon.awscdk.services.dynamodb.BillingMode;
 import software.amazon.awscdk.services.dynamodb.Table;
 import software.constructs.Construct;
 
-public class CryptoOrderStack extends Stack {
-    public CryptoOrderStack(final Construct scope, final String id) {
+public class BotStateStack extends Stack {
+    public BotStateStack(final Construct scope, final String id) {
         this(scope, id, null);
     }
 
-    public CryptoOrderStack(final Construct scope, final String id, final StackProps props) {
+    public BotStateStack(final Construct scope, final String id, final StackProps props) {
         this(scope, id, props, null);
     }
 
-    public CryptoOrderStack(final Construct scope, final String id, final StackProps props, String stage) {
+    public BotStateStack(final Construct scope, final String id, final StackProps props, String stage) {
         super(scope, id, props);
 
-        String tableName = "dev".equals(stage) ? "dev-crypto-order" : "crypto-order";
+        String tableName = "dev".equals(stage) ? "dev-bot-state" : "bot-state";
         
-        Table.Builder.create(this, "CryptoOrderTable")
+        Table.Builder.create(this, "BotStateTable")
             .tableName(tableName)
             .partitionKey(Attribute.builder()
                 .name("id")
+                .type(AttributeType.STRING)
+                .build())
+            .sortKey(Attribute.builder()
+                .name("status")
                 .type(AttributeType.STRING)
                 .build())
             .billingMode(BillingMode.PAY_PER_REQUEST)

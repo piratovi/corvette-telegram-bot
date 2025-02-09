@@ -6,11 +6,12 @@ import java.time.ZonedDateTime;
 import lombok.Data;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
 @Data
 @DynamoDbBean
 public class CryptoOrder {
-    
+
     private String id;
     private ZonedDateTime createdAt;
     private String cryptoCurrency;
@@ -28,7 +29,7 @@ public class CryptoOrder {
                 📊 Type:     %s
                 📈 Status:   %s
                 💰 Price:    %.2f
-                📦 Amount:   %.4f""",
+                📦 Amount:   %.1f""",
                 id,
                 createdAt.toLocalDateTime(),
                 cryptoCurrency,
@@ -43,5 +44,4 @@ public class CryptoOrder {
         return id;
     }
 
-    
 }
