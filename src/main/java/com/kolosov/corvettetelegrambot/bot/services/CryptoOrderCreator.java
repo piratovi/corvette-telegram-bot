@@ -37,6 +37,7 @@ public class CryptoOrderCreator {
     private final BotStateRepository botStateRepository;
     private final PersonalTelegramClient personalTelegramClient;
     private final CryptoQuoteService cryptoQuoteService;
+    private final CryptoOrderDisplayService cryptoOrderDisplayService;
 
     public static final String BASE = "create_order";
     private static final String CRYPTOCURRENCY = "cryptoCurrency";
@@ -152,6 +153,6 @@ public class CryptoOrderCreator {
         cryptoOrder.setAmount(amount);
         botStateRepository.setBotState(IDLE);
         cryptoOrderRepository.save(cryptoOrder);
-        personalTelegramClient.send("Order created successfully:\n" + cryptoOrder.toString());
+        cryptoOrderDisplayService.displayOrder(cryptoOrder, "Order created successfully:\n");
     }
 }

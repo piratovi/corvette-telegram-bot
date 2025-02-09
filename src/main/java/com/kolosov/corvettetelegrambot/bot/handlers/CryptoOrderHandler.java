@@ -16,6 +16,7 @@ import com.kolosov.corvettetelegrambot.bot.dto.MessageDTO;
 import com.kolosov.corvettetelegrambot.bot.services.CryptoOrderCreator;
 import com.kolosov.corvettetelegrambot.crypto.CryptoOrder;
 import com.kolosov.corvettetelegrambot.repository.CryptoOrderRepository;
+import com.kolosov.corvettetelegrambot.bot.services.CryptoOrderDisplayService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,14 +27,15 @@ public class CryptoOrderHandler {
         public static final String BASE = "order";
         public static final String COMMAND = "/" + BASE;
 
-        private static final String SHOW_ALL = "show_all";
-        private static final String CREATE = "start_creation";
-        private static final String EDIT = "edit";
-        private static final String DELETE = "delete";
+        public static final String SHOW_ALL = "show_all";
+        public static final String CREATE = "start_creation";
+        public static final String EDIT = "edit";
+        public static final String DELETE = "delete";
 
         private final CryptoOrderRepository cryptoOrderRepository;
         private final PersonalTelegramClient personalTelegramClient;
         private final CryptoOrderCreator cryptoOrderCreator;
+        private final CryptoOrderDisplayService cryptoOrderDisplayService;
 
         public void handle(MessageDTO message) {
                 sendMenuMessage();
@@ -75,23 +77,7 @@ public class CryptoOrderHandler {
         }
 
         private void show(CryptoOrder order) {
-                var editButton = InlineKeyboardButton.builder()
-                                .text(EDIT)
-                                .callbackData(BASE + " " + EDIT + " " + order.getId())
-                                .build();
-
-                var deleteButton = InlineKeyboardButton.builder()
-                                .text(DELETE)
-                                .callbackData(BASE + " " + DELETE + " " + order.getId())
-                                .build();
-
-                var keyboardRow = new InlineKeyboardRow(List.of(editButton, deleteButton));
-
-                var keyboardMarkup = InlineKeyboardMarkup.builder()
-                                .keyboardRow(keyboardRow)
-                                .build();
-
-                personalTelegramClient.sendWithKeyboard(order.toString(), keyboardMarkup);
+                cryptoOrderDisplayService.displayOrder(order, "");
         }
         
         private void create() {
