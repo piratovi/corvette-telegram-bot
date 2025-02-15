@@ -24,7 +24,7 @@ public class LLMCostCalculator {
         Usage usage = chatResponse.getMetadata().getUsage();
 
         BigDecimal inputTokens = BigDecimal.valueOf(usage.getPromptTokens());
-        BigDecimal outputTokens = BigDecimal.valueOf(usage.getGenerationTokens());
+        BigDecimal outputTokens = BigDecimal.valueOf(usage.getCompletionTokens());
         logger.info("Input tokens: {}", inputTokens);
         logger.info("Output tokens: {}", outputTokens);
 

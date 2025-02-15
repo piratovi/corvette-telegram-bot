@@ -28,7 +28,7 @@ class CryptoOrderRepositoryTest {
     @AfterEach
     void cleanup() {
         // Delete all items from the table
-        repository.findAll().forEach(repository::delete);
+        repository.findAllOpen().forEach(repository::delete);
     }
 
     @Test
@@ -71,7 +71,7 @@ class CryptoOrderRepositoryTest {
         repository.save(order2);
 
         // when
-        List<CryptoOrder> orders = repository.findAll();
+        List<CryptoOrder> orders = repository.findAllOpen();
 
         // then
         assertThat(orders).hasSize(2);

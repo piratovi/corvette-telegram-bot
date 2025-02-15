@@ -22,7 +22,7 @@ public class CryptoOrderRepository {
 
     private final DynamoDbTable<CryptoOrder> table;
 
-    public List<CryptoOrder> findAll() {
+    public List<CryptoOrder> findAllOpen() {
         return table.scan(r -> r
                 .filterExpression(Expression.builder()
                         .expression("#s = :status")

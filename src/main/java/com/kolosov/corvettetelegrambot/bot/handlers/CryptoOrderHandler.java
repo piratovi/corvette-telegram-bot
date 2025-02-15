@@ -69,7 +69,7 @@ public class CryptoOrderHandler {
         }
 
         private void showAll() {
-                List<CryptoOrder> orders = cryptoOrderRepository.findAll();
+                List<CryptoOrder> orders = cryptoOrderRepository.findAllOpen();
                 orders.forEach(this::show);
         }
 
