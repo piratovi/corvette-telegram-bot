@@ -20,7 +20,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(classes = {CryptoHistoryService.class, CryptocompareAPIConfiguration.class,
         CryptoHistoryMapper.class, CryptoHistoryMapperImpl.class, CryptoAdviser.class, ChatClientConfiguration.class,
-        LLMCostCalculator.class, LLMCostCalculator.class, CryptoOrderRepository.class, DynamoDBConfig.class})
+        LLMCostCalculator.class, CryptoOrderRepository.class, DynamoDBConfig.class})
 @EnableAutoConfiguration
 @EnableConfigurationProperties(LLMCostProperties.class)
 @ActiveProfiles("dev")
